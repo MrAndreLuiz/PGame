@@ -5,6 +5,7 @@ import sys
 import pygame
 from pygame.locals import *
 
+
 FPS = 30
 SCREENWIDTH = 288
 SCREENHEIGHT = 512
@@ -15,13 +16,31 @@ IMAGES = {}
 
 # tupla com as tres posicoes da barbatana
 PLAYER_LIST = (
-    'assets/images/redfish-upfin.png',
-    'assets/images/redfish-midfin.png',
-    'assets/images/redfish-downfin.png',
+    # peixe vermelho
+    (
+        'assets/images/redfish-upfin.png',
+        'assets/images/redfish-midfin.png',
+        'assets/images/redfish-downfin.png',
+    ),
+    # peixe azul
+    (
+        'assets/images/bluefish-upfin.png',
+        'assets/images/bluefish-midfin.png',
+        'assets/images/bluefish-downfin.png',
+    ),
+    # peixe amarelo
+    (
+        'assets/images/bluefish-upfin.png',
+        'assets/images/bluefish-midfin.png',
+        'assets/images/bluefish-downfin.png',
+    ),
 )
 
 # fundo
 BACKGROUND = 'assets/images/background.png'
+
+# tronco
+TRUNK = 'assets/images/trunk.png'
 
 
 def main():
@@ -31,6 +50,7 @@ def main():
     SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
     pygame.display.set_caption('PGame - Alfa')
 
+    # imagem de boas vindas
     IMAGES['welcome'] = pygame.image.load('assets/images/welcome.png').convert_alpha()
     # imagem da base (terreno)
     IMAGES['base'] = pygame.image.load('assets/images/base.png').convert_alpha()
@@ -38,12 +58,12 @@ def main():
     while True:
         IMAGES['background'] = pygame.image.load(BACKGROUND).convert()
 
-        # seleciona imagens aleatorias do personagem
+        # seleciona imagens aleatorias dos personagens
         randPlayer = random.randint(0, len(PLAYER_LIST) - 1)
         IMAGES['player'] = (
-            pygame.image.load(PLAYER_LIST[randPlayer]).convert_alpha(),
-            pygame.image.load(PLAYER_LIST[randPlayer]).convert_alpha(),
-            pygame.image.load(PLAYER_LIST[randPlayer]).convert_alpha(),
+            pygame.image.load(PLAYER_LIST[randPlayer][1]).convert_alpha(),
+            pygame.image.load(PLAYER_LIST[randPlayer][1]).convert_alpha(),
+            pygame.image.load(PLAYER_LIST[randPlayer][1]).convert_alpha(),
         )
 
         initialAnimation()
@@ -92,10 +112,10 @@ def initialAnimation():
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-        # imprime o frame rate para testes de desempenho
-        print "fps:", FPSCLOCK.get_fps()
-		
-		# estrutura de teste
+        # testes de desempenho
+        printFPS()
+
+        # estrutura de teste
         pygame.quit()
         sys.exit()
 
@@ -110,6 +130,10 @@ def playerShm(playerShm):
     else:
         playerShm['val'] -= 1
 
+
+def printFPS():
+    """Imprime o frame rate para testes de desempenho"""
+    print "fps:", FPSCLOCK.get_fps()
 
 if __name__ == '__main__':
     main()
