@@ -61,9 +61,9 @@ def main():
         # seleciona imagens aleatorias dos personagens
         randPlayer = random.randint(0, len(PLAYER_LIST) - 1)
         IMAGES['player'] = (
+            pygame.image.load(PLAYER_LIST[randPlayer][0]).convert_alpha(),
             pygame.image.load(PLAYER_LIST[randPlayer][1]).convert_alpha(),
-            pygame.image.load(PLAYER_LIST[randPlayer][1]).convert_alpha(),
-            pygame.image.load(PLAYER_LIST[randPlayer][1]).convert_alpha(),
+            pygame.image.load(PLAYER_LIST[randPlayer][2]).convert_alpha(),
         )
 
         initialAnimation()
