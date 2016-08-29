@@ -43,7 +43,7 @@ O jogo virá compactado, você deve descompactá-lo utilizando um software para 
 
 [dl-winrar]:http://www.win-rar.com/download.html
 
-[dl-jogo]:https://github.com/GamerVicioX/PGame/blob/master/README.md#obter-pgame
+[dl-jogo]:https://github.com/MrAndreLuiz/PGame/#obter-pgame
 
 ### **4.** Após efetuar o download do jogo, abra um terminal e execute as seguintes etapas:
 
