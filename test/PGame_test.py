@@ -37,8 +37,11 @@ PLAYER_LIST = (
     ),
 )
 
-# fundo
-BACKGROUND = 'assets/images/background.png'
+# lista de fundos
+BACKGROUNDS_LIST = (
+    'assets/images/background-day.png',
+    'assets/images/background-night.png',
+)
 
 # tronco
 TRUNK = 'assets/images/trunk.png'
@@ -51,13 +54,31 @@ def main():
     SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
     pygame.display.set_caption('PGame - Beta 1')
 
+    # imagens dos numeros de pontuacao
+    IMAGES['numbers'] = (
+        pygame.image.load('assets/images/0.png').convert_alpha(),
+        pygame.image.load('assets/images/1.png').convert_alpha(),
+        pygame.image.load('assets/images/2.png').convert_alpha(),
+        pygame.image.load('assets/images/3.png').convert_alpha(),
+        pygame.image.load('assets/images/4.png').convert_alpha(),
+        pygame.image.load('assets/images/5.png').convert_alpha(),
+        pygame.image.load('assets/images/6.png').convert_alpha(),
+        pygame.image.load('assets/images/7.png').convert_alpha(),
+        pygame.image.load('assets/images/8.png').convert_alpha(),
+        pygame.image.load('assets/images/9.png').convert_alpha()
+    )
+
+    # imagem de fim de jogo
+    IMAGES['gameover'] = pygame.image.load('assets/images/gameover.png').convert_alpha()
     # imagem de boas vindas
     IMAGES['welcome'] = pygame.image.load('assets/images/welcome.png').convert_alpha()
     # imagem da base (terreno)
     IMAGES['base'] = pygame.image.load('assets/images/base.png').convert_alpha()
 
     while True:
-        IMAGES['background'] = pygame.image.load(BACKGROUND).convert()
+        # seleciona imagens aleatorias dos fundos
+        randBg = random.randint(0, len(BACKGROUNDS_LIST) - 1)
+        IMAGES['background'] = pygame.image.load(BACKGROUNDS_LIST[randBg]).convert()
 
         # seleciona imagens aleatorias dos personagens
         randPlayer = random.randint(0, len(PLAYER_LIST) - 1)
@@ -74,17 +95,17 @@ def main():
             pygame.image.load(TRUNK).convert_alpha(),
         )
 
+        # histmask do tronco
+        HITMASKS['trunk'] = (
+            getHitmask(IMAGES['trunk'][0]),
+            getHitmask(IMAGES['trunk'][1]),
+        )
+
         # hitmask dos personagens
         HITMASKS['player'] = (
             getHitmask(IMAGES['player'][0]),
             getHitmask(IMAGES['player'][1]),
             getHitmask(IMAGES['player'][2]),
-        )
-
-        # histmask do tronco
-        HITMASKS['trunk'] = (
-            getHitmask(IMAGES['trunk'][0]),
-            getHitmask(IMAGES['trunk'][1]),
         )
 
         movementInfo = initialAnimation()
