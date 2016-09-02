@@ -12,8 +12,8 @@ SCREENHEIGHT = 512
 # montante do desvio maximo da base para a esquerda
 TRUNKGAPSIZE  = 100 # espaco entre a parte superior e inferior do tronco
 BASEY = SCREENHEIGHT + (SCREENWIDTH * 0.69 - SCREENWIDTH)
-# imagem dicts
-IMAGES, HITMASKS = {}, {}
+# imagem, sons e hitmasks dicts
+IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 # tupla com as tres posicoes da barbatana
 PLAYER_LIST = (
@@ -74,6 +74,18 @@ def main():
     IMAGES['welcome'] = pygame.image.load('assets/images/welcome.png').convert_alpha()
     # imagem da base (terreno)
     IMAGES['base'] = pygame.image.load('assets/images/base.png').convert_alpha()
+
+    # sons
+    if 'win' in sys.platform:
+        soundExt = '.wav'
+    else:
+        soundExt = '.ogg'
+
+    SOUNDS['die'] = pygame.mixer.Sound('assets/audio/die' + soundExt)
+    SOUNDS['hit'] = pygame.mixer.Sound('assets/audio/hit' + soundExt)
+    SOUNDS['point'] = pygame.mixer.Sound('assets/audio/point' + soundExt)
+    SOUNDS['swoosh'] = pygame.mixer.Sound('assets/audio/swoosh' + soundExt)
+    SOUNDS['wing'] = pygame.mixer.Sound('assets/audio/wing' + soundExt)
 
     while True:
         # seleciona imagens aleatorias dos fundos
@@ -139,6 +151,7 @@ def initialAnimation():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+                SOUNDS['wing'].play()
                 return {
                     'playery': playery + playerShmVals['val'],
                     'basex': basex,
@@ -209,6 +222,7 @@ def mainGame(movementInfo):
                 if playery > -2 * IMAGES['player'][0].get_height():
                     playerVelY = playerFinAcc
                     playerFinped = True
+                    SOUNDS['wing'].play()
 
         # verifica acidentes
         crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
