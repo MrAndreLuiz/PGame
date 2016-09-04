@@ -81,11 +81,12 @@ def main():
     else:
         soundExt = '.ogg'
 
-    SOUNDS['die'] = pygame.mixer.Sound('assets/audio/die' + soundExt)
-    SOUNDS['hit'] = pygame.mixer.Sound('assets/audio/hit' + soundExt)
-    SOUNDS['point'] = pygame.mixer.Sound('assets/audio/point' + soundExt)
-    SOUNDS['swoosh'] = pygame.mixer.Sound('assets/audio/swoosh' + soundExt)
-    SOUNDS['wing'] = pygame.mixer.Sound('assets/audio/wing' + soundExt)
+    # correcao mixer do sistema
+    SOUNDS['die'] = ('assets/audio/die' + soundExt)
+    SOUNDS['hit'] = ('assets/audio/hit' + soundExt)
+    SOUNDS['point'] = ('assets/audio/point' + soundExt)
+    SOUNDS['swoosh'] = ('assets/audio/swoosh' + soundExt)
+    SOUNDS['wing'] = ('assets/audio/wing' + soundExt)
 
     while True:
         # seleciona imagens aleatorias dos fundos
@@ -121,7 +122,8 @@ def main():
         )
 
         movementInfo = initialAnimation()
-        mainGame(movementInfo)
+        crashInfo = mainGame(movementInfo)
+        showGameOverScreen(crashInfo)
 
 
 def initialAnimation():
@@ -152,7 +154,8 @@ def initialAnimation():
                 pygame.quit()
                 sys.exit()
             if getIn == True:
-                SOUNDS['wing'].play()
+                #sons nao sao executados pelo compilador
+                SOUNDS['wing']
                 return {
                     'playery': playery + playerShmVals['val'],
                     'basex': basex,
@@ -177,10 +180,6 @@ def initialAnimation():
         FPSCLOCK.tick(FPS)
         # testes de desempenho
         printFPS()
-
-        print "modulos ok"
-        pygame.quit()
-        sys.exit()
 
 
 def mainGame(movementInfo):
@@ -227,7 +226,7 @@ def mainGame(movementInfo):
                 if playery > -2 * IMAGES['player'][0].get_height():
                     playerVelY = playerFinAcc
                     playerFinped = True
-                    SOUNDS['wing'].play()
+                    SOUNDS['wing']
 
         # verifica acidentes
         crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
@@ -286,6 +285,59 @@ def mainGame(movementInfo):
         FPSCLOCK.tick(FPS)
         # testes de desempenho
         printFPS()
+
+
+def showGameOverScreen(crashInfo):
+    """trava o personagem caido e mostra a imagem de fim de jogo"""
+    playerx = SCREENWIDTH * 0.2
+    playery = crashInfo['y']
+    playerHeight = IMAGES['player'][0].get_height()
+    playerVelY = crashInfo['playerVelY']
+    playerAccY = 2
+
+    basex = crashInfo['basex']
+
+    upperTrunks, lowerTrunks = crashInfo['upperTrunks'], crashInfo['lowerTrunks']
+
+    # executa sons de bater e morrer
+    SOUNDS['hit']
+    if not crashInfo['groundCrash']:
+        SOUNDS['die']
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+                if playery + playerHeight >= BASEY - 1:
+                    return
+
+        # mudanca do personagem em y
+        if playery + playerHeight < BASEY - 1:
+            playery += min(playerVelY, BASEY - playery - playerHeight)
+
+        # mudanca de velocidade do personagem
+        if playerVelY < 15:
+            playerVelY += playerAccY
+
+        # desenha as imagens
+        SCREEN.blit(IMAGES['background'], (0,0))
+
+        for uTrunk, lTrunk in zip(upperTrunks, lowerTrunks):
+            SCREEN.blit(IMAGES['trunk'][0], (uTrunk['x'], uTrunk['y']))
+            SCREEN.blit(IMAGES['trunk'][1], (lTrunk['x'], lTrunk['y']))
+
+        SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        SCREEN.blit(IMAGES['player'][1], (playerx,playery))
+
+        FPSCLOCK.tick(FPS)
+        pygame.display.update()
+        printFPS()
+
+        print "modulos ok"
+        pygame.quit()
+        sys.exit()
 
 
 def playerShm(playerShm):

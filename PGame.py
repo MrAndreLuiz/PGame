@@ -121,7 +121,8 @@ def main():
         )
 
         movementInfo = initialAnimation()
-        mainGame(movementInfo)
+        crashInfo = mainGame(movementInfo)
+        showGameOverScreen(crashInfo)
 
 
 def initialAnimation():
@@ -280,6 +281,55 @@ def mainGame(movementInfo):
         pygame.display.update()
         FPSCLOCK.tick(FPS)
         # testes de desempenho
+        printFPS()
+
+
+def showGameOverScreen(crashInfo):
+    """trava o personagem caido e mostra a imagem de fim de jogo"""
+    playerx = SCREENWIDTH * 0.2
+    playery = crashInfo['y']
+    playerHeight = IMAGES['player'][0].get_height()
+    playerVelY = crashInfo['playerVelY']
+    playerAccY = 2
+
+    basex = crashInfo['basex']
+
+    upperTrunks, lowerTrunks = crashInfo['upperTrunks'], crashInfo['lowerTrunks']
+
+    # executa sons de bater e morrer
+    SOUNDS['hit'].play()
+    if not crashInfo['groundCrash']:
+        SOUNDS['die'].play()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+                if playery + playerHeight >= BASEY - 1:
+                    return
+
+        # mudanca do personagem em y
+        if playery + playerHeight < BASEY - 1:
+            playery += min(playerVelY, BASEY - playery - playerHeight)
+
+        # mudanca de velocidade do personagem
+        if playerVelY < 15:
+            playerVelY += playerAccY
+
+        # desenha as imagens
+        SCREEN.blit(IMAGES['background'], (0,0))
+
+        for uTrunk, lTrunk in zip(upperTrunks, lowerTrunks):
+            SCREEN.blit(IMAGES['trunk'][0], (uTrunk['x'], uTrunk['y']))
+            SCREEN.blit(IMAGES['trunk'][1], (lTrunk['x'], lTrunk['y']))
+
+        SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        SCREEN.blit(IMAGES['player'][1], (playerx,playery))
+
+        FPSCLOCK.tick(FPS)
+        pygame.display.update()
         printFPS()
 
 
