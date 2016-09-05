@@ -12,8 +12,8 @@ SCREENHEIGHT = 512
 # montante do desvio maximo da base para a esquerda
 TRUNKGAPSIZE  = 100 # espaco entre a parte superior e inferior do tronco
 BASEY = SCREENHEIGHT + (SCREENWIDTH * 0.69 - SCREENWIDTH)
-# imagem dicts
-IMAGES, HITMASKS = {}, {}
+# imagem, sons e hitmasks dicts
+IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 # tupla com as tres posicoes da barbatana
 PLAYER_LIST = (
@@ -37,8 +37,11 @@ PLAYER_LIST = (
     ),
 )
 
-# fundo
-BACKGROUND = 'assets/images/background.png'
+# lista de fundos
+BACKGROUNDS_LIST = (
+    'assets/images/background-day.png',
+    'assets/images/background-night.png',
+)
 
 # tronco
 TRUNK = 'assets/images/trunk.png'
@@ -49,15 +52,45 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-    pygame.display.set_caption('PGame - Beta 1')
+    pygame.display.set_caption('PGame - Beta 2')
 
+    # imagens dos numeros de pontuacao
+    IMAGES['numbers'] = (
+        pygame.image.load('assets/images/0.png').convert_alpha(),
+        pygame.image.load('assets/images/1.png').convert_alpha(),
+        pygame.image.load('assets/images/2.png').convert_alpha(),
+        pygame.image.load('assets/images/3.png').convert_alpha(),
+        pygame.image.load('assets/images/4.png').convert_alpha(),
+        pygame.image.load('assets/images/5.png').convert_alpha(),
+        pygame.image.load('assets/images/6.png').convert_alpha(),
+        pygame.image.load('assets/images/7.png').convert_alpha(),
+        pygame.image.load('assets/images/8.png').convert_alpha(),
+        pygame.image.load('assets/images/9.png').convert_alpha()
+    )
+
+    # imagem de fim de jogo
+    IMAGES['gameover'] = pygame.image.load('assets/images/gameover.png').convert_alpha()
     # imagem de boas vindas
     IMAGES['welcome'] = pygame.image.load('assets/images/welcome.png').convert_alpha()
     # imagem da base (terreno)
     IMAGES['base'] = pygame.image.load('assets/images/base.png').convert_alpha()
 
+    # sons
+    if 'win' in sys.platform:
+        soundExt = '.wav'
+    else:
+        soundExt = '.ogg'
+
+    SOUNDS['die'] = ('assets/audio/die' + soundExt)
+    SOUNDS['hit'] = ('assets/audio/hit' + soundExt)
+    SOUNDS['point'] = ('assets/audio/point' + soundExt)
+    SOUNDS['swoosh'] = ('assets/audio/swoosh' + soundExt)
+    SOUNDS['wing'] = ('assets/audio/wing' + soundExt)
+
     while True:
-        IMAGES['background'] = pygame.image.load(BACKGROUND).convert()
+        # seleciona imagens aleatorias dos fundos
+        randBg = random.randint(0, len(BACKGROUNDS_LIST) - 1)
+        IMAGES['background'] = pygame.image.load(BACKGROUNDS_LIST[randBg]).convert()
 
         # seleciona imagens aleatorias dos personagens
         randPlayer = random.randint(0, len(PLAYER_LIST) - 1)
@@ -74,6 +107,12 @@ def main():
             pygame.image.load(TRUNK).convert_alpha(),
         )
 
+        # histmask do tronco
+        HITMASKS['trunk'] = (
+            getHitmask(IMAGES['trunk'][0]),
+            getHitmask(IMAGES['trunk'][1]),
+        )
+
         # hitmask dos personagens
         HITMASKS['player'] = (
             getHitmask(IMAGES['player'][0]),
@@ -81,14 +120,9 @@ def main():
             getHitmask(IMAGES['player'][2]),
         )
 
-        # histmask do tronco
-        HITMASKS['trunk'] = (
-            getHitmask(IMAGES['trunk'][0]),
-            getHitmask(IMAGES['trunk'][1]),
-        )
-
         movementInfo = initialAnimation()
-        mainGame(movementInfo)
+        crashInfo = mainGame(movementInfo)
+        showGameOverScreen(crashInfo)
 
 
 def initialAnimation():
@@ -114,16 +148,13 @@ def initialAnimation():
     getIn = True
 
     while True:
-        for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
-                pygame.quit()
-                sys.exit()
-            if getIn == True:
-                return {
-                    'playery': playery + playerShmVals['val'],
-                    'basex': basex,
-                    'playerIndexGen': playerIndexGen,
-                }
+        if getIn == True:
+            SOUNDS['wing']
+            return {
+                'playery': playery + playerShmVals['val'],
+                 'basex': basex,
+                'playerIndexGen': playerIndexGen,
+            }
 
         # ajusta playery, playerIndex, basex
         if (loopIter + 1) % 5 == 0:
@@ -132,10 +163,10 @@ def initialAnimation():
         basex = -((-basex + 4) % baseShift)
         playerShm(playerShmVals)
 
-        # desenha as imagens
+            # desenha as imagens
         SCREEN.blit(IMAGES['background'], (0, 0))
         SCREEN.blit(IMAGES['player'][playerIndex],
-                    (playerx, playery + playerShmVals['val']))
+                        (playerx, playery + playerShmVals['val']))
         SCREEN.blit(IMAGES['welcome'], (messagex, messagey))
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
 
@@ -144,13 +175,9 @@ def initialAnimation():
         # testes de desempenho
         printFPS()
 
-        print "modulos ok"
-        pygame.quit()
-        sys.exit()
-
 
 def mainGame(movementInfo):
-    playerIndex = loopIter = 0
+    score = playerIndex = loopIter = 0
     playerIndexGen = movementInfo['playerIndexGen']
     playerx, playery = int(SCREENWIDTH * 0.2), movementInfo['playery']
 
@@ -193,6 +220,7 @@ def mainGame(movementInfo):
                 if playery > -2 * IMAGES['player'][0].get_height():
                     playerVelY = playerFinAcc
                     playerFinped = True
+                    SOUNDS['wing']
 
         # verifica acidentes
         crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
@@ -204,8 +232,17 @@ def mainGame(movementInfo):
                 'basex': basex,
                 'upperTrunks': upperTrunks,
                 'lowerTrunks': lowerTrunks,
+                'score': score,
                 'playerVelY': playerVelY,
             }
+
+        # verifica a existencia de pontuacao
+        playerMidPos = playerx + IMAGES['player'][0].get_width() / 2
+        for trunk in upperTrunks:
+            trunkMidPos = trunk['x'] + IMAGES['trunk'][0].get_width() / 2
+            if trunkMidPos <= playerMidPos < trunkMidPos + 4:
+                score += 1
+                SOUNDS['point']
 
         # mudancas em playerIndex basex
         if (loopIter + 1) % 3 == 0:
@@ -245,12 +282,69 @@ def mainGame(movementInfo):
             SCREEN.blit(IMAGES['trunk'][1], (lTrunk['x'], lTrunk['y']))
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        # exibe a pontuacao de forma que o personagem se sobrepoe a pontuacao
+        showScore(score)
         SCREEN.blit(IMAGES['player'][playerIndex], (playerx, playery))
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
         # testes de desempenho
         printFPS()
+
+
+def showGameOverScreen(crashInfo):
+    """trava o personagem caido e mostra a imagem de fim de jogo"""
+    score = crashInfo['score']
+    playerx = SCREENWIDTH * 0.2
+    playery = crashInfo['y']
+    playerHeight = IMAGES['player'][0].get_height()
+    playerVelY = crashInfo['playerVelY']
+    playerAccY = 2
+
+    basex = crashInfo['basex']
+
+    upperTrunks, lowerTrunks = crashInfo['upperTrunks'], crashInfo['lowerTrunks']
+
+    # executa sons de bater e morrer
+    SOUNDS['hit']
+    if not crashInfo['groundCrash']:
+        SOUNDS['die']
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+                if playery + playerHeight >= BASEY - 1:
+                    return
+
+        # mudanca do personagem em y
+        if playery + playerHeight < BASEY - 1:
+            playery += min(playerVelY, BASEY - playery - playerHeight)
+
+        # mudanca de velocidade do personagem
+        if playerVelY < 15:
+            playerVelY += playerAccY
+
+        # desenha as imagens
+        SCREEN.blit(IMAGES['background'], (0,0))
+
+        for uTrunk, lTrunk in zip(upperTrunks, lowerTrunks):
+            SCREEN.blit(IMAGES['trunk'][0], (uTrunk['x'], uTrunk['y']))
+            SCREEN.blit(IMAGES['trunk'][1], (lTrunk['x'], lTrunk['y']))
+
+        SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        showScore(score)
+        SCREEN.blit(IMAGES['player'][1], (playerx,playery))
+
+        FPSCLOCK.tick(FPS)
+        pygame.display.update()
+        printFPS()
+
+        print "modulos ok"
+        pygame.quit()
+        sys.exit()
 
 
 def playerShm(playerShm):
@@ -276,6 +370,21 @@ def getRandomTrunk():
         {'x': trunkX, 'y': gapY - trunkHeight},  # tronco superior
         {'x': trunkX, 'y': gapY + TRUNKGAPSIZE}, # tronco inferior
     ]
+
+
+def showScore(score):
+    """exibe pontuacao na tela"""
+    scoreDigits = [int(x) for x in list(str(score))]
+    totalWidth = 0 # largura total de todos os numeros a serem exibidos
+
+    for digit in scoreDigits:
+        totalWidth += IMAGES['numbers'][digit].get_width()
+
+    Xoffset = (SCREENWIDTH - totalWidth) / 2
+
+    for digit in scoreDigits:
+        SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
+        Xoffset += IMAGES['numbers'][digit].get_width()
 
 
 def checkCrash(player, upperTrunks, lowerTrunks):
