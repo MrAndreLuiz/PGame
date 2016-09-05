@@ -52,7 +52,7 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-    pygame.display.set_caption('PGame - Beta 1')
+    pygame.display.set_caption('PGame - Beta 2')
 
     # imagens dos numeros de pontuacao
     IMAGES['numbers'] = (
@@ -180,7 +180,7 @@ def initialAnimation():
 
 
 def mainGame(movementInfo):
-    playerIndex = loopIter = 0
+    score = playerIndex = loopIter = 0
     playerIndexGen = movementInfo['playerIndexGen']
     playerx, playery = int(SCREENWIDTH * 0.2), movementInfo['playery']
 
@@ -235,8 +235,17 @@ def mainGame(movementInfo):
                 'basex': basex,
                 'upperTrunks': upperTrunks,
                 'lowerTrunks': lowerTrunks,
+                'score': score,
                 'playerVelY': playerVelY,
             }
+
+        # verifica a existencia de pontuacao
+        playerMidPos = playerx + IMAGES['player'][0].get_width() / 2
+        for trunk in upperTrunks:
+            trunkMidPos = trunk['x'] + IMAGES['trunk'][0].get_width() / 2
+            if trunkMidPos <= playerMidPos < trunkMidPos + 4:
+                score += 1
+                SOUNDS['point'].play()
 
         # mudancas em playerIndex basex
         if (loopIter + 1) % 3 == 0:
@@ -276,6 +285,8 @@ def mainGame(movementInfo):
             SCREEN.blit(IMAGES['trunk'][1], (lTrunk['x'], lTrunk['y']))
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        # exibe a pontuacao de forma que o personagem se sobrepoe a pontuacao
+        showScore(score)
         SCREEN.blit(IMAGES['player'][playerIndex], (playerx, playery))
 
         pygame.display.update()
@@ -286,6 +297,7 @@ def mainGame(movementInfo):
 
 def showGameOverScreen(crashInfo):
     """trava o personagem caido e mostra a imagem de fim de jogo"""
+    score = crashInfo['score']
     playerx = SCREENWIDTH * 0.2
     playery = crashInfo['y']
     playerHeight = IMAGES['player'][0].get_height()
@@ -326,6 +338,7 @@ def showGameOverScreen(crashInfo):
             SCREEN.blit(IMAGES['trunk'][1], (lTrunk['x'], lTrunk['y']))
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        showScore(score)
         SCREEN.blit(IMAGES['player'][1], (playerx,playery))
 
         FPSCLOCK.tick(FPS)
@@ -356,6 +369,21 @@ def getRandomTrunk():
         {'x': trunkX, 'y': gapY - trunkHeight},  # tronco superior
         {'x': trunkX, 'y': gapY + TRUNKGAPSIZE}, # tronco inferior
     ]
+
+
+def showScore(score):
+    """exibe pontuacao na tela"""
+    scoreDigits = [int(x) for x in list(str(score))]
+    totalWidth = 0 # largura total de todos os numeros a serem exibidos
+
+    for digit in scoreDigits:
+        totalWidth += IMAGES['numbers'][digit].get_width()
+
+    Xoffset = (SCREENWIDTH - totalWidth) / 2
+
+    for digit in scoreDigits:
+        SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
+        Xoffset += IMAGES['numbers'][digit].get_width()
 
 
 def checkCrash(player, upperTrunks, lowerTrunks):
