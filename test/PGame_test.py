@@ -11,7 +11,7 @@ SCREENWIDTH = 288
 SCREENHEIGHT = 512
 # montante do desvio maximo da base para a esquerda
 TRUNKGAPSIZE  = 100 # espaco entre a parte superior e inferior do tronco
-BASEY = SCREENHEIGHT + (SCREENWIDTH * 0.69 - SCREENWIDTH)
+BASEY = SCREENHEIGHT * 0.79
 # imagem, sons e hitmasks dicts
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
