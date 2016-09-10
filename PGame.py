@@ -31,9 +31,9 @@ PLAYER_LIST = (
     ),
     # peixe amarelo
     (
-        'assets/images/bluefish-upfin.png',
-        'assets/images/bluefish-midfin.png',
-        'assets/images/bluefish-downfin.png',
+        'assets/images/yellowfish-upfin.png',
+        'assets/images/yellowfish-midfin.png',
+        'assets/images/yellowfish-downfin.png',
     ),
 )
 
