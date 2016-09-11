@@ -304,6 +304,9 @@ def showGameOverScreen(crashInfo):
     playerVelY = crashInfo['playerVelY']
     playerAccY = 2
 
+    gameoverx = int((SCREENWIDTH - IMAGES['gameover'].get_width()) / 2)
+    gameovery = int(SCREENHEIGHT * 0.35)
+
     basex = crashInfo['basex']
 
     upperTrunks, lowerTrunks = crashInfo['upperTrunks'], crashInfo['lowerTrunks']
@@ -339,6 +342,7 @@ def showGameOverScreen(crashInfo):
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
         showScore(score)
+        SCREEN.blit(IMAGES['gameover'], (gameoverx, gameovery))
         SCREEN.blit(IMAGES['player'][1], (playerx,playery))
 
         FPSCLOCK.tick(FPS)
