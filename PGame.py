@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from itertools import cycle
 import random
 import sys
@@ -11,7 +14,7 @@ SCREENWIDTH = 288
 SCREENHEIGHT = 512
 # montante do desvio maximo da base para a esquerda
 TRUNKGAPSIZE  = 100 # espaco entre a parte superior e inferior do tronco
-BASEY = SCREENHEIGHT + (SCREENWIDTH * 0.69 - SCREENWIDTH)
+BASEY = SCREENHEIGHT * 0.79
 # imagem, sons e hitmasks dicts
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
@@ -31,9 +34,9 @@ PLAYER_LIST = (
     ),
     # peixe amarelo
     (
-        'assets/images/bluefish-upfin.png',
-        'assets/images/bluefish-midfin.png',
-        'assets/images/bluefish-downfin.png',
+        'assets/images/yellowfish-upfin.png',
+        'assets/images/yellowfish-midfin.png',
+        'assets/images/yellowfish-downfin.png',
     ),
 )
 
@@ -52,7 +55,7 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-    pygame.display.set_caption('PGame - Beta 2')
+    pygame.display.set_caption('Os Peixinhos - 1.0')
 
     # imagens dos numeros de pontuacao
     IMAGES['numbers'] = (
@@ -175,8 +178,6 @@ def initialAnimation():
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-        # testes de desempenho
-        printFPS()
 
 
 def mainGame(movementInfo):
@@ -291,8 +292,6 @@ def mainGame(movementInfo):
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-        # testes de desempenho
-        printFPS()
 
 
 def showGameOverScreen(crashInfo):
@@ -303,6 +302,9 @@ def showGameOverScreen(crashInfo):
     playerHeight = IMAGES['player'][0].get_height()
     playerVelY = crashInfo['playerVelY']
     playerAccY = 2
+
+    gameoverx = int((SCREENWIDTH - IMAGES['gameover'].get_width()) / 2)
+    gameovery = int(SCREENHEIGHT * 0.35)
 
     basex = crashInfo['basex']
 
@@ -339,11 +341,11 @@ def showGameOverScreen(crashInfo):
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
         showScore(score)
+        SCREEN.blit(IMAGES['gameover'], (gameoverx, gameovery))
         SCREEN.blit(IMAGES['player'][1], (playerx,playery))
 
         FPSCLOCK.tick(FPS)
         pygame.display.update()
-        printFPS()
 
 
 def playerShm(playerShm):
@@ -447,11 +449,6 @@ def getHitmask(image):
         for y in range(image.get_height()):
             mask[x].append(bool(image.get_at((x, y))[3]))
     return mask
-
-
-def printFPS():
-    """Imprime o frame rate para testes de desempenho"""
-    print "fps:", FPSCLOCK.get_fps()
 
 if __name__ == '__main__':
     main()
