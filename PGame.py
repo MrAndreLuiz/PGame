@@ -55,7 +55,7 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-    pygame.display.set_caption('PGame - Beta 2')
+    pygame.display.set_caption('Os Peixinhos - 1.0')
 
     # imagens dos numeros de pontuacao
     IMAGES['numbers'] = (
@@ -178,8 +178,6 @@ def initialAnimation():
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-        # testes de desempenho
-        printFPS()
 
 
 def mainGame(movementInfo):
@@ -294,8 +292,6 @@ def mainGame(movementInfo):
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-        # testes de desempenho
-        printFPS()
 
 
 def showGameOverScreen(crashInfo):
@@ -350,7 +346,6 @@ def showGameOverScreen(crashInfo):
 
         FPSCLOCK.tick(FPS)
         pygame.display.update()
-        printFPS()
 
 
 def playerShm(playerShm):
@@ -454,11 +449,6 @@ def getHitmask(image):
         for y in range(image.get_height()):
             mask[x].append(bool(image.get_at((x, y))[3]))
     return mask
-
-
-def printFPS():
-    """Imprime o frame rate para testes de desempenho"""
-    print "fps:", FPSCLOCK.get_fps()
 
 if __name__ == '__main__':
     main()
