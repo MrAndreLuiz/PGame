@@ -1,6 +1,14 @@
 Histórico de Alterações
 =======================
 
+v1.0.0 (11/09/2016)
+--------------------------
+
+* Corrigido a mensagem de fim de jogo.
+* Corrigido a seleção de personagem.
+* Corrigido a base.
+* Adicionado imagens e texturas finais.
+
 v1.0.0-beta.2 (05/09/2016)
 --------------------------
 

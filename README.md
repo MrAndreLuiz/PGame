@@ -52,6 +52,7 @@ Selecione a versão desejada abaixo e faça o download:
 
 | Versão                       | Download                 | Data de lançamento |
 |------------------------------|--------------------------|--------------------|
+| Final                        | [v1.0.0][rl-final]       | 11/09/2016         |
 | Beta 2                       | [v1.0.0-beta.2][rl-beta2]| 05/09/2016         |
 | Beta 1                       | [v1.0.0-beta.1][rl-beta1]| 29/08/2016         |
 | Alfa                         | [v1.0.0-alpha][rl-alfa]  | 22/08/2016         |
@@ -61,6 +62,7 @@ Se tiver dificuldades para executar o jogo leia o [documento][in-jogo] sobre a i
 [rl-alfa]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-alpha/PGame-1.0.0-alpha.zip
 [rl-beta1]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-beta.1/PGame-1.0.0-beta.1.zip
 [rl-beta2]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-beta.2/PGame-1.0.0-beta.2.zip
+[rl-final]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0/PGame-1.0.0.zip
 [in-jogo]: https://github.com/MrAndreLuiz/PGame/blob/master/docs/INSTRUCTIONS.md
 
 [Alterações][lk-alteracoes]
