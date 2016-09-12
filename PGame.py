@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# PGame é um jogo eletrônico implementado
+# na linguagem de programação Python utilizando
+# práticas ágeis para gerir sua construção.
+
+# Este programa é software livre; você pode redistribuí-lo e/ou modificá-lo
+# sob os termos da Licença Pública Geral GNU, conforme publicada pela
+# Free Software Foundation; tanto a versão 2 da Licença como (a seu critério)
+# qualquer versão mais nova.
+
+# Este programa é distribuído na expectativa de ser útil, mas SEM QUALQUER GARANTIA;
+# nem mesmo a garantia implícita de COMERCIALIZAÇÃO ou de ADEQUAÇÃO A QUALQUER PROPÓSITO
+# EM PARTICULAR. Consulte a Licença Pública Geral GNU para obter mais detalhes.
+
+# Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa;
+# se não, escreva para a Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+# Boston, MA 02111-1307, USA.
+
 from itertools import cycle
 import random
 import sys

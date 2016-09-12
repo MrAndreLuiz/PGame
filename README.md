@@ -59,6 +59,8 @@ Selecione a versão desejada abaixo e faça o download:
 
 Se tiver dificuldades para executar o jogo leia o [documento][in-jogo] sobre a instalação.
 
+> **Ao fazer o download de qualquer uma das versões acima, ou aquelas publicadas na seção de releases, independentemente da data de públicação das mesmas, você concorda com os termos de uso atribuídos em [licença][lk-licen].**
+
 [rl-alfa]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-alpha/PGame-1.0.0-alpha.zip
 [rl-beta1]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-beta.1/PGame-1.0.0-beta.1.zip
 [rl-beta2]: https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-beta.2/PGame-1.0.0-beta.2.zip
@@ -74,7 +76,16 @@ Você pode ver um histórico com as alterações de cada versão [aqui][ls-alter
 
 [Licença][lk-licen]
 -------
+Os seguintes termos são aplicáveis a todos aqueles que obtiverem ou obtiveram este pacote de software completo ou uma parte dele, sejam arquivos de imagem, som ou código fonte, de forma conjunta ou individual:
 
-Este código está licenciado sob a [GPL v2][lk-licenca].
+1. Todo, e somente, o código fonte contido no arquivo ``` PGame.py ``` está licenciado sob a [GPL v2][lk-licenca].
 
-[lk-licenca]: https://github.com/MrAndreLuiz/PGame/blob/master/LICENSE.md
+2. Todos os demais itens pertencentes a este pacote, exceto o arquivo descrito acima, estão licenciados sob a [CC BY-SA 4.0][lk-licenca2].
+
+3. A utilização deste pacote de software, de forma completa ou em partes individuais, em trabalhos acadêmicos em âmbito nacional ou internacional deve respeitar a legislação brasileira e a [lei nº 9.610][lk-lei] sobre direitos autorais.
+
+> Este pacote de software é fornecido "como está", sem garania de qualquer tipo, expressa ou implícita, incluindo, sem limitação, as garantias de comercialização e adequação a um determinado fim. Em nenhum caso os autores ou dententores de direitos de autor são responsáveis por qualquer reclamação, danos ou outra responsabilidade, seja em uma ação de contrato, delito ou de outra forma, decorrentes de, ou em conexão com este pacote de software, seu uso, ou outra aplicação do código fonte, imagens, sons e outros aqui distribuídos.
+
+[lk-licenca]: https://github.com/MrAndreLuiz/PGame/blob/master/LICENSE-GPLV2.md
+[lk-licenca2]: https://github.com/MrAndreLuiz/PGame/blob/master/LICENSE-CCBYSA4.md
+[lk-lei]: http://www.planalto.gov.br/ccivil_03/leis/L9610.htm
