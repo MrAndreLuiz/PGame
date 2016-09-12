@@ -4,6 +4,7 @@
 # PGame é um jogo eletrônico implementado
 # na linguagem de programação Python utilizando
 # práticas ágeis para gerir sua construção.
+# Copyright (C) 2016 André Luiz
 
 # Este programa é software livre; você pode redistribuí-lo e/ou modificá-lo
 # sob os termos da Licença Pública Geral GNU, conforme publicada pela
