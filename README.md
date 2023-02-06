@@ -19,7 +19,7 @@ Conteúdo
 [Introdução][lk-introducao]
 ----------
 
-PGame está sendo desenvolvido para um trabalho universitário. É um jogo eletrônico implementado na linguagem de programação Python, juntamente com a biblioteca para jogos multiplataforma Pygame, utilizando práticas ágeis para gerir sua construção.
+PGame foi sendo desenvolvido para um trabalho universitário. É um jogo eletrônico implementado na linguagem de programação Python, juntamente com a biblioteca para jogos multiplataforma Pygame, utilizando práticas ágeis para gerir sua construção.
 
 [logo]: https://github.com/MrAndreLuiz/PGame/blob/master/assets/logo/logo_64.png?raw=true "Logo"
 
