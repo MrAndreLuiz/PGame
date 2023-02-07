@@ -1,3 +1,4 @@
+
 Instruções de instalação
 ========================
 
@@ -27,6 +28,8 @@ Requisitos de hardware recomendados:
 
 ### **2.** Após verificar os requisitos de hardware, faça o download e a instalação dos seguintes softwares:
 
+**1.** Softwares disponíveis para varias plataformas:
+
 | Software                     | Download                 |
 |------------------------------|--------------------------|
 | Python 2.7.x                 | [clique aqui][dl-python] | 
@@ -34,6 +37,14 @@ Requisitos de hardware recomendados:
 
 [dl-python]:https://www.python.org/downloads/
 [dl-pygame]:http://www.pygame.org/download.shtml
+
+**2.** Softwares para executar o jogo em versões mais recentes do Windows:
+
+| Software                     | Download                 |
+|------------------------------|--------------------------|
+| Python 2.7.18 e Pygame 2.0.3 | [clique aqui][dl-python-pygame] |
+
+[dl-python-pygame]:https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-update/Update-for-Execute-PGame-Code-1.0.0.zip
 
 ### **3.** Com os softwares devidamente instalados, faça o download da ultima versão dísponivel do jogo:
 
@@ -59,3 +70,9 @@ cd <diretório>
 ```bash
 python PGame.py
 ```
+
+### Versão executável do jogo:
+
+Você pode obter uma versão do jogo agrupada com todas as suas dependências em um único pacote executável para Windows [aqui][dl-executavel].
+
+[dl-executavel]:https://github.com/MrAndreLuiz/PGame/releases/download/v1.0.0-update/PGame-Executable-1.0.0.zip
